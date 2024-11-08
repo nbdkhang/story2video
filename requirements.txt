@@ -1,0 +1,12 @@
+streamlit
+replicate
+diffusers
+torch==2.2.0+cu118 -f https://download.pytorch.org/whl/torch_stable.html
+torchvision==0.15.2+cu118
+Pillow
+google-generativeai
+nltk
+moviepy
+gtts
+deep-translator
+accelerate
