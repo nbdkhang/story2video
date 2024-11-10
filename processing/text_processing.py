@@ -1,8 +1,11 @@
 import google.generativeai as genai
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
 import nltk
+import numpy
 
 nltk.download('punkt')
+nltk.download('punkt_tab')
+
 genai.configure(api_key="AIzaSyCkwncvHXfqUSsri-ePJeOv0plRLEjkB_Y")
 model = genai.GenerativeModel('gemini-1.5-flash')
 safety_settings = {

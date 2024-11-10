@@ -1,39 +1,72 @@
 import streamlit as st
-from processing.text_processing import format_prompt, split_sentence, sentence_sum, format_story
-from processing.image_generation import generate_image
-from processing.audio_video_creation import create_audio, create_image
+import json
+import requests
+from io import StringIO
+from processing.audio_video_creation import generate_video
 
-# Giao diện người dùng Streamlit
-st.title("Tạo Video từ Văn Bản")
+# App title and sidebar setup
+st.set_page_config(page_title="Tạo Video từ Văn Bản")
+with st.sidebar:
+    st.title('Tạo Video từ Văn Bản')
 
-# Nhập văn bản
-text = st.text_area("Nhập nội dung văn bản để tạo video:")
+def clear_chat_history():
+    st.session_state.messages = [{"role": "assistant", "content": "Nhập đoạn văn để tạo video."}]
 
-if text:
-    # Xử lý văn bản và tạo câu chuyện
-    story_img = format_story(text)
-    story_audio = split_sentence(text)
+uploaded_file = st.sidebar.file_uploader("Choose a file")
+st.sidebar.button('Clear Chat History', on_click=clear_chat_history)
 
-    clips = []
-    for i, (audio_sentence, img_sentence) in enumerate(zip(story_audio, story_img)):
-        audio_file = f"audio_{i}.mp3"
-        image_file = f"image_{i}.png"
+# Initialize chat history in session state
+if "messages" not in st.session_state:
+    st.session_state.messages = [{"role": "assistant", "content": "Nhập đoạn văn để tạo video."}]
 
-        create_audio(audio_sentence, audio_file)
-        create_image(img_sentence, audio_sentence, image_file)
+# Function to call the prediction API
+def call_generation(prompt):
+    try:
+        with st.spinner("Đang tạo video..."):
+            # Generate video and retrieve file path
+            video_path = generate_video(prompt)
+    
+        # Display video
+        if video_path:
+            st.video(video_path)
+    except requests.exceptions.RequestException as e:
+        st.error(f"Lỗi API: {e}")
+        return "Error occurred while creating video."
 
-        # Tạo video clip từ hình ảnh và âm thanh
-        img_clip = ImageClip(image_file).set_duration(4)
-        audio_clip = AudioFileClip(audio_file)
-        img_clip = img_clip.set_duration(audio_clip.duration)
-        video_clip = img_clip.set_audio(audio_clip)
-        clips.append(video_clip)
+# Display chat history
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.write(message["content"])
 
-    # Kết hợp các video clip lại
-    final_video = concatenate_videoclips(clips, method="compose")
+# Handle user text input
+if user_input := st.chat_input("Nhập đoạn văn để tạo video:"):
+    st.session_state.messages.append({"role": "user", "content": user_input})
+    
+    # Display user message
+    with st.chat_message("user"):
+        st.write(user_input)
+    
+    # Generate response and display it
+    with st.chat_message("assistant"):
+        with st.spinner("Đang xử lý..."):
+            assistant_response = call_generation(user_input)
+    
+    # Append assistant message to chat history
+    st.session_state.messages.append({"role": "assistant", "content": assistant_response})
 
-    # Xuất video
-    final_video.write_videofile("output_video.mp4", fps=24)
-
-    # Tải video
-    st.video("output_video.mp4")
+# Handle file upload
+if uploaded_file is not None:
+    prompt = StringIO(uploaded_file.getvalue().decode("utf-8")).read()
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    
+    # Display uploaded content as user message
+    with st.chat_message("user"):
+        st.write(prompt)
+        
+    # Generate response for uploaded content and display it
+    with st.chat_message("assistant"):
+        with st.spinner("Đang xử lý..."):
+            assistant_response = call_generation(prompt)
+    
+    # Append assistant message to chat history
+    st.session_state.messages.append({"role": "assistant", "content": assistant_response})
