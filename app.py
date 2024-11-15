@@ -56,8 +56,7 @@ if user_input := st.chat_input("Nhập đoạn văn để tạo video:"):
     
     # Generate response and display it
     with st.chat_message("assistant"):
-        with st.spinner("Đang xử lý..."):
-            assistant_response = call_generation(user_input)
+        assistant_response = call_generation(user_input)
     
     # Append assistant message to chat history
     st.session_state.messages.append({"role": "assistant", "content": assistant_response})
@@ -73,8 +72,7 @@ if uploaded_file is not None:
         
     # Generate response for uploaded content and display it
     with st.chat_message("assistant"):
-        with st.spinner("Đang xử lý..."):
-            assistant_response = call_generation(prompt)
+        assistant_response = call_generation(prompt)
     
     # Append assistant message to chat history
     st.session_state.messages.append({"role": "assistant", "content": assistant_response})
