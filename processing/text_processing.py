@@ -24,7 +24,7 @@ PROMPT_SUMMARY = {
     "long_prompt": """
   Bạn là 1 con AI phân tích các nội dung chính trong câu và trả về 1 đoạn hoàn chỉnh
   loại bỏ các từ không cần thiết, các nội dung cần trả lời gồm:
-  - đối tượng là gì? màu của đối tượng cần thống nhất?
+  - đối tượng là gì? màu của đối tượng cần thống nhất
   - hành động là gì? khoảng cách các vật như thế nào?
   - bối cảnh như thế nào (nếu không đề cập thì tự sinh ra)?.
   Trả về một đoạn ngắn chứa tóm tắt thông tin truyền vào trong 1 câu bằng tiếng anh
