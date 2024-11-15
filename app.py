@@ -7,7 +7,16 @@ from processing.audio_video_creation import generate_video
 # App title and sidebar setup
 st.set_page_config(page_title="Tạo Video từ Văn Bản")
 with st.sidebar:
-    st.title('Tạo Video từ Văn Bản')
+    st.title('Tạo video từ văn bản Tiếng Việt')
+
+    add_questions = st.selectbox('Chọn cách gợi ý ảnh', ['Ngắn gọn', 'Đầy đủ'], key='add_questions')
+
+    # Model type based on selection
+    match add_questions:
+        case 'Ngắn gọn':
+            prompt_type = 'short_prompt'
+        case 'Đầy đủ':
+            prompt_type = 'long_prompt'
 
 def clear_chat_history():
     st.session_state.messages = [{"role": "assistant", "content": "Nhập đoạn văn để tạo video."}]
@@ -24,7 +33,7 @@ def call_generation(prompt):
     try:
         with st.spinner("Đang tạo video..."):
             # Generate video and retrieve file path
-            video_path = generate_video(prompt)
+            video_path = generate_video(prompt, prompt_type)
     
         # Display video
         if video_path:
