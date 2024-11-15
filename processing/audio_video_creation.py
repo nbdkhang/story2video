@@ -1,11 +1,13 @@
+import textwrap
+import os
 from moviepy.editor import *
 from gtts import gTTS
 from PIL import Image, ImageDraw, ImageFont
-import os
 from deep_translator import GoogleTranslator
 from .image_generation import generate_image
 from .text_processing import  split_sentence, format_story
-import textwrap
+from datetime import datetime
+
 
 # text='''
 # Đây là một câu truyện cổ tích về loài vật kể về một con cáo bắt gặp một chùm nho chín đỏ căng mọng hấp dẫn khiến cáo thèm nhỏ rãi nên đã có ý định nhảy lên để hái chùm nho. Vì khoảng cách của cáo và chùm nho khá xa nên nó đã đi xa gốc cây một khoảng để lấy được đà nhảy lên hái chùm nho, nhưng lần nhảy đầu tiên thì cáo không với tới chỉ cần một xíu nữa là có thể hái được chùm nho.
@@ -57,7 +59,8 @@ def generate_video(text, prompt_type):
 
     # Concatenate all clips into a final video
     final_video = concatenate_videoclips(clips, method="compose")
-    output_file = "output_video.mp4"
+    current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_file = f"output_video_{current_time}.mp4"
     final_video.write_videofile(output_file, fps=24)
 
     # Clean up temporary files

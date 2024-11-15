@@ -26,4 +26,12 @@
 
    pip install torchvision==0.17.2+cu118 -f https://download.pytorch.org/whl/torch_stable.html
 ## Configuration
+1. Gemini API Key:
+   - Get Key free :D : https://aistudio.google.com/app/apikey
 
+# Running the Application
+
+1. Khởi động ứng dụng Streamlit:
+   ```
+   streamlit run ChatBot.py
+   ```

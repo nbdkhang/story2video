@@ -8,4 +8,5 @@ moviepy
 gtts
 deep-translator
 accelerate
-numpy=1.24.3
+numpy==1.24.3
+transformers

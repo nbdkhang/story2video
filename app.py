@@ -8,7 +8,6 @@ from processing.audio_video_creation import generate_video
 st.set_page_config(page_title="Tạo Video từ Văn Bản")
 with st.sidebar:
     st.title('Tạo video từ văn bản Tiếng Việt')
-
     add_questions = st.selectbox('Chọn cách gợi ý ảnh', ['Ngắn gọn', 'Đầy đủ'], key='add_questions')
 
     # Model type based on selection
@@ -21,8 +20,8 @@ with st.sidebar:
 def clear_chat_history():
     st.session_state.messages = [{"role": "assistant", "content": "Nhập đoạn văn để tạo video."}]
 
-uploaded_file = st.sidebar.file_uploader("Choose a file")
-st.sidebar.button('Clear Chat History', on_click=clear_chat_history)
+uploaded_file = st.sidebar.file_uploader("Chọn file")
+st.sidebar.button('Xóa lịch sử', on_click=clear_chat_history)
 
 # Initialize chat history in session state
 if "messages" not in st.session_state:

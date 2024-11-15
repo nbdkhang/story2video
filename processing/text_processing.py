@@ -34,8 +34,7 @@ PROMPT_SUMMARY = {
   {context}
   """,
     "short_prompt": """
-  Gợi ý về số lượng ảnh cần để mô tả câu truyện và mô tả cho từng ảnh theo mẫu sau :
-  **Số lượng ảnh: x ảnh**
+  Gợi ý về số lượng ảnh cần để mô tả câu truyện và mô tả cho từng ảnh theo mẫu sau (Số lượng ảnh bằng với số câu):
 
   **Ảnh x:**
 
